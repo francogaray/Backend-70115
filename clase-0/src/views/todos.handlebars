@@ -1,0 +1,25 @@
+<h1>ToDo List con MongoDB!</h1>
+<div>
+    <a href="/new">Agregar nueva Tarea</a>
+</div>
+{{#each toDos}}
+    <div>
+        <p> Título: {{title}}</p>
+        <p> Descripción: {{description}} </p>
+
+        {{#if completed}}
+        <p>Completada</p>
+        <form action="/todos/{{_id}}/delete" method="POST">
+            <button type="submit">Eliminar Tarea</button>
+        </form>
+        {{else}}
+        <p>Pendiente</p>
+            <form action="/todos/{{_id}}/complete" method="POST">
+                <button type="submit">Marcar como como completada</button>
+            </form>
+        {{/if}}
+        <hr>
+
+    </div>
+
+{{/each}}
