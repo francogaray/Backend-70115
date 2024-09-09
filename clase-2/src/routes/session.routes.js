@@ -1,4 +1,6 @@
 import { Router } from "express";
+import UserModel from "../models/user.model.js"
+
 
 const router = Router();
 
@@ -16,7 +18,7 @@ router.post("/register", async (req, res) => {
 
         //Crear un nuevo usuario:
 
-        const nuevoUsuario = new UserModel.create({
+        const nuevoUsuario = await UserModel.create({
             first_name,
             last_name,
             email,
@@ -47,10 +49,10 @@ router.post("/login", async (req, res) => {
 
         if (usuarioBuscado) {
             if (usuarioBuscado.password === password) {
-                req.session = {
-                    first_name: first_name,
-                    last_name: last_name,
-                    email: email,
+                req.session.user = {
+                    first_name: usuarioBuscado.first_name,
+                    last_name: usuarioBuscado.last_name,
+                    email: usuarioBuscado.email,
                 };
 
                 req.session.login = true;

@@ -87,7 +87,7 @@ app.get("/borrarcuki", (req, res) => {
 
 // Rutas con session:
 
-app.get("/login", (req, res) => {
+app.get("/loginCuki", (req, res) => {
     let usuario = req.query.usuario;
 
     req.session.usuario = usuario;
