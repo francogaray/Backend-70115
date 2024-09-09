@@ -13,7 +13,7 @@ const PUERTO = 8080;
 
 mongoose
     .connect(
-        "mongodb+srv://coderBackend50015:coderBackend50015@cluster0.qutkujb.mongodb.net/"
+        "mongodb+srv://coderBackend50015:@cluster0.qutkujb.mongodb.net/"
     )
     .then(() => console.log("Nos conectamos a Mongo"))
     .catch((e) => console.log("Error: " + e));
