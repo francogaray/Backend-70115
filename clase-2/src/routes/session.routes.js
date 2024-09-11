@@ -1,6 +1,6 @@
 import { Router } from "express";
-import UserModel from "../models/user.model.js"
-
+import UserModel from "../models/user.model.js";
+import { createHash, isValidPassword } from "../utils/utils.js";
 
 const router = Router();
 
@@ -22,7 +22,7 @@ router.post("/register", async (req, res) => {
             first_name,
             last_name,
             email,
-            password,
+            password: createHash(password),
             age,
         });
 
@@ -31,6 +31,7 @@ router.post("/register", async (req, res) => {
             first_name: nuevoUsuario.first_name,
             last_name: nuevoUsuario.last_name,
             email: nuevoUsuario.email,
+            age: nuevoUsuario.age,
         };
 
         req.session.login = true;
@@ -48,11 +49,13 @@ router.post("/login", async (req, res) => {
         const usuarioBuscado = await UserModel.findOne({ email: email });
 
         if (usuarioBuscado) {
-            if (usuarioBuscado.password === password) {
+            //if (usuarioBuscado.password === password) {
+            if (isValidPassword(password, usuarioBuscado.password)) {
                 req.session.user = {
                     first_name: usuarioBuscado.first_name,
                     last_name: usuarioBuscado.last_name,
                     email: usuarioBuscado.email,
+                    age: usuarioBuscado.age,
                 };
 
                 req.session.login = true;
@@ -67,6 +70,13 @@ router.post("/login", async (req, res) => {
         console.log(error);
         res.status(500).send("Error del server al iniciar sesión");
     }
+});
+
+router.get("/logout", (req, res) => {
+    if (req.session.login) {
+        req.session.destroy();
+    }
+    res.redirect("/login");
 });
 
 export default router;
